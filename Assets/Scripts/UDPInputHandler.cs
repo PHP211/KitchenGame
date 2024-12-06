@@ -6,30 +6,39 @@ public class UDPInputHandler : MonoBehaviour {
 
     public static UDPInputHandler Instance { get; private set; }
 
-    //private PlayerInputActions playerInputActions;
-
     private UDPConnector connector;
 
     public int direction = 0;
+    public int interaction = 0;
     public int isMovement = 0;
 
-    public string prediction = "";
+    private int previousInteraction = -1;
 
     private void Awake() {
         Instance = this;
-        //connector = new UDPConnector();
     }
 
     private void Update() {
 
-        //prediction = UDPConnector.Instance.receivedData;
-
-        //Debug.Log("prediction: " + prediction);
-
         direction = UDPConnector.Instance.direction;
+        interaction = UDPConnector.Instance.interaction;
         isMovement = UDPConnector.Instance.isMovement;
 
-        //Debug.Log("Received from InputHandler: " + direction + isMovement);
+        int currentInteraction = interaction;
+
+        if (interaction != previousInteraction) {
+            previousInteraction = interaction;
+
+            if (interaction == 1) {
+                // Gọi hành động InteractAlternate
+                Player.Instance.HandleInteractAlternateAction();
+            } else if (interaction == 2) {
+                // Gọi hành động Interact
+                Player.Instance.HandleInteractAction();
+            }
+        }
+
+
     }
 
     public Vector2 GetMovementVector() {

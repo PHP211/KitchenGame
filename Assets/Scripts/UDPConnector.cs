@@ -10,6 +10,7 @@ public class UDPConnector : MonoBehaviour {
 
     public int direction = 0;
     public int isMovement = 0;
+    public int interaction = 0;
 
     public string receivedString = "";
 
@@ -36,33 +37,34 @@ public class UDPConnector : MonoBehaviour {
             byte[] receivedBytes = udpClient.EndReceive(result, ref remoteEndPoint);
             string receivedString = Encoding.ASCII.GetString(receivedBytes);
 
-            // Hiển thị chuỗi nhận được để kiểm tra
             Debug.Log("Received data: " + receivedString);
 
-            // Tách chuỗi nhận được thành mảng các phần tử
             string[] receiveData = receivedString.Split(',');
 
-            // Kiểm tra nếu dữ liệu nhận được có đủ số phần tử cần thiết
-            if (receiveData.Length == 2) {
-                // Chuyển đổi phần tử đầu tiên (isMovement) thành int
+            if (receiveData.Length == 3) {
+
                 if (int.TryParse(receiveData[0].Trim(), out int parsedIsMovement)) {
                     isMovement = parsedIsMovement;
                 } else {
                     Debug.LogError("Failed to parse isMovement.");
                 }
 
-                // Chuyển đổi phần tử thứ hai (direction index) thành int
                 if (int.TryParse(receiveData[1].Trim(), out int parsedDirection)) {
                     direction = parsedDirection;
                 } else {
                     Debug.LogError("Failed to parse direction.");
                 }
 
+                if (int.TryParse(receiveData[2].Trim(), out int parsedInteraction)) {
+                    interaction = parsedInteraction;
+                } else {
+                    Debug.LogError("Failed to parse interaction.");
+                }
+
             } else {
-                Debug.LogError("Invalid data format: expected 2 values.");
+                Debug.LogError("Invalid data format: expected 3 values.");
             }
 
-            // Tiếp tục nhận dữ liệu
             udpClient.BeginReceive(new AsyncCallback(ReceiveData), null);
         } catch (Exception e) {
             Debug.LogError("Error receiving UDP data: " + e.Message);

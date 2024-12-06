@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -48,6 +48,24 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
             selectedCounter.Interact(this);
         }
     }
+
+    // Các phương thức mới để xử lý interaction từ UDPInputHandler
+    public void HandleInteractAction() {
+        if (!KitchenGameManager.Instance.IsGamePlaying()) return;
+
+        if (selectedCounter != null) {
+            selectedCounter.Interact(this);
+        }
+    }
+
+    public void HandleInteractAlternateAction() {
+        if (!KitchenGameManager.Instance.IsGamePlaying()) return;
+
+        if (selectedCounter != null) {
+            selectedCounter.InteractAlternate(this);
+        }
+    }
+
 
     private void Update() {
         HandleMovement();

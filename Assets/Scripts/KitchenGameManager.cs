@@ -13,7 +13,7 @@ public class KitchenGameManager : MonoBehaviour {
 
     private float countDownToStartTimer = 3f;
     private float gamePlayingTimer;
-    private float gamePlayingTimerMax = 120f;
+    private float gamePlayingTimerMax = 1000f;
     private bool isGamePause = false;
 
     private enum State {
